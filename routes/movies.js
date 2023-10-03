@@ -8,10 +8,10 @@ const {
     createMovie, 
     updateMovie, 
     deleteMovie 
-} = require('../controllers/jobs');
+} = require('../controllers/movies');
 
 // syntax option 2 (i like this one)
-router.route('/').post(createMovie).get(getAllUserMovies);
-router.route('/:id').get(getMovie).delete(deleteMovie).patch(updateMovie);
+router.route('/').post(createMovie).get(getAllUserMovies); // domain/api/v1/jobs
+router.route('/:id').get(getMovie).delete(deleteMovie).patch(updateMovie); // domain/api/v1/jobs/:id
 
 module.exports = router;

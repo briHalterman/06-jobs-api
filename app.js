@@ -3,6 +3,12 @@ require('express-async-errors');
 const express = require('express'); // look for express
 const app = express(); // invoke express and set equal to app
 
+// connectDB
+
+// routers
+const authRouter = require('./routes/auth');
+const moviesRouter = require('./routes/movies');
+
 // error handler middleware
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -12,9 +18,11 @@ app.use(express.json());
 // extra packages
 
 // routes
-app.get('/', (req, res) => { // forward-slash (/) leads to home page 
-  res.send('jobs api');
-});
+// app.get('/', (req, res) => { // forward-slash (/) leads to home page 
+//   res.send('jobs api');
+// });
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/movies', moviesRouter);
 
 // pass not found middleware and error handler middleware into app.use()
 app.use(notFoundMiddleware);
