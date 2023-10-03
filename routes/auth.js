@@ -8,6 +8,7 @@ const router = express.Router();
 const { login, register } = require('../controllers/auth');
 
 // set up routes
+// syntax option 1
 router.post('/register', register);
 router.post('/login', login);
 
