@@ -14,3 +14,5 @@ const connectDB = (url) => {
 
 module.exports = connectDB;
 
+// Setup .env in the root
+// Add MONGO_URI with correct value
