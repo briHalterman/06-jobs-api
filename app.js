@@ -4,6 +4,7 @@ const express = require('express'); // look for express
 const app = express(); // invoke express and set equal to app
 
 // connectDB
+const connectDB = require('./db/connect');
 
 // routers
 const authRouter = require('./routes/auth');
@@ -34,9 +35,11 @@ const port = process.env.PORT || 3000;
 // start function
 const start = async () => {
   try {
+    // invoke connectDB
+    await connectDB(process.env.MONGO_URI);
+    // console.log('connected');
     // invoke app.listen()
-    app.listen(port, () =>
-      console.log(`Server is listening on port ${port}...`)
+    app.listen(port, console.log(`Server is listening on port ${port}...`)
     );
   } catch (error) {
     console.log(error);
