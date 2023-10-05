@@ -33,13 +33,21 @@ const UserSchema = new mongoose.Schema({
 
 // Middleware (pre and post hooks) functions - passed control during execution of async functions
 // pre save - before we save the document
-UserSchema.pre('save', async function(next) {
-    // generate salt and get password
+
+// next()
+// UserSchema.pre('save', async function(next) {
+//     // generate salt and get password
+//     const salt = await bcrypt.genSalt(10);
+//     // use "this" function keyword value - scoped to document
+//     this.password = await bcrypt.hash(this.password, salt);
+//     // pass on to next middleware
+//     next();
+// });
+
+// async await
+UserSchema.pre('save', async function() {
     const salt = await bcrypt.genSalt(10);
-    // use "this" function keyword value - scoped to document
     this.password = await bcrypt.hash(this.password, salt);
-    // pass on to next middleware
-    next();
 }); 
 
 module.exports = mongoose.model('User', UserSchema);
