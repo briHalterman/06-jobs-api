@@ -24,7 +24,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide password"],
         minLength: 6,
-        maxLength: 12 // we will remove maxlength later, once we hash our password
+        // maxLength: 12 
+            // // we will remove maxlength later, once we hash our password
+            // hashed password is longer than 12 characters
     }
 });
 
