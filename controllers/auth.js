@@ -6,6 +6,17 @@ const { StatusCodes } = require('http-status-codes');
 const { BadRequestError } = require('../errors');
 const bcrypt = require('bcryptjs');
 
+// use JSON web tokens (JWTs) for authenticating user
+// store user records in MongoDB, need User model
+// store user name, email, and hashed password in database
+// never store passwords in plain text, instead cryptographically hash them so that even if the database is compromised, the passwords are not
+// cryptography for password comes from bcryptjs npm package 
+// hashing is performed in a middleware routine that is added to the User model, which is a pre routine for the save operation
+// add instance methods to User model for generating JWT and validating user password
+// use function keyword (not the arrow function syntax) so that the function is associated with “this” which is a user instance
+// set timestamps on entries
+// use authentication middleware to protect routes
+
 const register = async (req, res) => {
     // res.send('register user');
     // res.json(req.body);
