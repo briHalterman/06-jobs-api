@@ -61,8 +61,10 @@ UserSchema.methods.getName = function () {
 UserSchema.methods.createJWT = function () {
     return jwt.sign(
         { userId:this._id, name: this.name }, 
-        'jwtSecret', 
-        { expiresIn: '30d' }
+        // 'jwtSecret', 
+        process.env.JWT_SECRET,
+        // { expiresIn: process.env } // interpreted as seconds unless using a string providing time units (ms default)
+        { expiresIn: process.env.JWT_LIFETIME }
     );
 };
 
