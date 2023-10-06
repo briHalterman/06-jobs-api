@@ -50,4 +50,11 @@ UserSchema.pre('save', async function() {
     this.password = await bcrypt.hash(this.password, salt);
 }); 
 
+// schemas instance methods
+// regular function (no async keyword)
+// use function keyword (not arrow function) so that this will always point to the documents 
+UserSchema.methods.getName = function () {
+    return this.name;
+};
+
 module.exports = mongoose.model('User', UserSchema);

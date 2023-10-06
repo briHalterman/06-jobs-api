@@ -52,7 +52,11 @@ const register = async (req, res) => {
 
     // res.status(StatusCodes.CREATED).json(req.body);
     // res.status(StatusCodes.CREATED).json({ user });
-    res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+    res.status(StatusCodes.CREATED).json({ 
+        // user: { name: user.name },
+        user: { name: user.getName() },
+        token
+    });
 };
 
 const login = async (req, res) => {
