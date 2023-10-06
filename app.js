@@ -6,6 +6,13 @@ const app = express(); // invoke express and set equal to app
 // connectDB
 const connectDB = require('./db/connect');
 
+// place auth middleware in app.js
+// authenticate all routes
+// so that only creator can modify own entries
+// get middleware and stick it in fron of movies router
+// all of our movies routes will be protected
+const authenticateUser = require('./middleware/authentication')
+
 // routers
 const authRouter = require('./routes/auth');
 const moviesRouter = require('./routes/movies');
@@ -23,7 +30,7 @@ app.use(express.json());
 //   res.send('jobs api');
 // });
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/movies', moviesRouter);
+app.use('/api/v1/movies', authenticateUser, moviesRouter);
 
 // pass not found middleware and error handler middleware into app.use()
 app.use(notFoundMiddleware);
