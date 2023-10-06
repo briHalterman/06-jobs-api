@@ -65,21 +65,29 @@ const login = async (req, res) => {
     
     // initial check for email and password in controller
     const { email, password } = req.body;
+    // console.log(req.body)
     
     // check for email and password values
     if (!email || !password) {
         // if missing send back bad request
-        throw new BadRequestError("Please provide email and password");
+        throw new BadRequestError('Please provide email and password');
     }
     
     // check for user in database
     const user = await User.findOne({ email });
-    
-    // compare password
+
+    // if no user, send back another error
     if (!user) {
-        // if no user, send back another error
         throw new UnauthenticatedError('Invalid Credentials');
     }
+
+    // set up if statement to check if the password matches, only happens if there is a user
+    const isPasswordCorrect = await user.comparePassword(password); // compare password using bcrypt library
+    
+    // if the password is not correct throw error
+    if (!isPasswordCorrect) {
+        throw new UnauthenticatedError('Invalid Credentials')
+    };
 
     const token = user.createJWT();
     

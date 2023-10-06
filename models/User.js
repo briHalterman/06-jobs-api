@@ -68,4 +68,12 @@ UserSchema.methods.createJWT = function () {
     );
 };
 
+// compare password coming in to password in document
+// compare method - in the bcrypt package - compares hashed passwords
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+    console.log(candidatePassword)
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    return isMatch;
+};
+
 module.exports = mongoose.model('User', UserSchema);
