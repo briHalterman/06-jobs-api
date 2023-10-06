@@ -7,8 +7,7 @@ const app = express(); // invoke express and set equal to app
 const connectDB = require('./db/connect');
 
 // place auth middleware in app.js
-// authenticate all routes
-// so that only creator can modify own entries
+// authenticate all routes so that only creator can modify own entries
 // get middleware and stick it in fron of movies router
 // all of our movies routes will be protected
 const authenticateUser = require('./middleware/authentication')

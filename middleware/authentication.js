@@ -17,9 +17,17 @@ const auth = async (req, res, next) => {
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET) // try to get payload
         // attach the user to the movie routes
+
         req.user = { userId: payload.userId, name: payload.name }; // userId and name from what comes back from verify
+
+        // Alternately:
+        // const user = User.findById(payload.id).select('-password');
+        // req.user = user;
+        // // no functionality to remove user anyway
+
         // invoke next() - to get to movie routes
         next();
+
     } catch (error) {
         throw new UnauthenticatedError('Authentication Invalid')
     };
