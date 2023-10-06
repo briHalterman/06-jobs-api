@@ -5,7 +5,7 @@ const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError } = require('../errors');
 // const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken');
 
 // use JSON web tokens (JWTs) for authenticating user
 // store user records in MongoDB, need User model
@@ -43,18 +43,19 @@ const register = async (req, res) => {
     });
     // // very bad parctice to save passwords as strings as they come in, we will fix that soon
 
-    const token = jwt.sign(
-        // don't store secrets
-        { userId: user._id, name: user.name }, // use underscore to differentiate IDs
-        'jwtSecret', 
-        { expiresIn: '30d' }
-    );
+    // const token = jwt.sign(
+    //     // don't store secrets
+    //     { userId: user._id, name: user.name }, // use underscore to differentiate IDs
+    //     'jwtSecret', 
+    //     { expiresIn: '30d' }
+    // );
+    const token = user.createJWT();
 
     // res.status(StatusCodes.CREATED).json(req.body);
     // res.status(StatusCodes.CREATED).json({ user });
     res.status(StatusCodes.CREATED).json({ 
-        // user: { name: user.name },
-        user: { name: user.getName() },
+        user: { name: user.name },
+        // user: { name: user.getName() },
         token
     });
 };

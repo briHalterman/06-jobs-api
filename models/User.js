@@ -1,6 +1,7 @@
 // USER MODEL
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
     // name, email & password
@@ -55,6 +56,14 @@ UserSchema.pre('save', async function() {
 // use function keyword (not arrow function) so that this will always point to the documents 
 UserSchema.methods.getName = function () {
     return this.name;
+};
+
+UserSchema.methods.createJWT = function () {
+    return jwt.sign(
+        { userId:this._id, name: this.name }, 
+        'jwtSecret', 
+        { expiresIn: '30d' }
+    );
 };
 
 module.exports = mongoose.model('User', UserSchema);
