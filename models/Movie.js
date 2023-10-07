@@ -1,5 +1,14 @@
 // MOVIE MODEL
 // create a movie model
+
+// Access Control for Entries
+// make sure that a user can’t see or change or delete another user’s records
+// purpose of createdBy - limit access to certain entries
+// for each CRUD operation, use the ID of the User record for the logged on user
+// authentication middleware stores this in req.user when the JWT token is validated
+// when creating a Movie entry, store the ID in the createdBy attribute
+// when retrieving the Movie entries, or a single Movie entry, or doing an update or delete of a Movie entry, include the ID to filter your Mongoose operation
+
 // set up mongoose
 const mongoose = require('mongoose');
 
