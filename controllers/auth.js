@@ -92,7 +92,7 @@ const login = async (req, res) => {
     const token = user.createJWT();
     
     // send back user
-    res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
+    res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
 };
 
 module.exports = {
