@@ -9,7 +9,7 @@ const getMovie = async (req, res) => {
 };
 const createMovie = async (req, res) => {
     // res.send('create movie entry');
-    res.json(req.user); // test out auth middleware
+    res.json(req.body); // test out auth middleware
 };
 const updateMovie = async (req, res) => {
     res.send('update movie entry');
