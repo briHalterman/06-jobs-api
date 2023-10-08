@@ -12,6 +12,7 @@ const getAllUserMovies = async (req, res) => {
     const movies = await Movie.find({ createdBy: req.user.userId }).sort('createdAt');
     res.status(StatusCodes.OK).json({ movies, count: movies.length });
 };
+
 const getMovie = async (req, res) => {
     // res.send('get individual movie');
     
@@ -32,6 +33,7 @@ const getMovie = async (req, res) => {
     
     res.status(StatusCodes.OK).json({ movie });
 };
+
 const createMovie = async (req, res) => {
     // res.send('create movie entry');
     req.body.createdBy = req.user.userId;
@@ -39,6 +41,7 @@ const createMovie = async (req, res) => {
     // res.json(req.body); // test out auth middleware
     res.status(StatusCodes.CREATED).json({ movie });
 };
+
 const updateMovie = async (req, res) => {
     // res.send('update movie entry');
     const {
@@ -65,7 +68,22 @@ const updateMovie = async (req, res) => {
 };
 
 const deleteMovie = async (req, res) => {
-    res.send('delete movie entry');
+    // res.send('delete movie entry');
+    const {
+        user: { userId },
+        params: { id: movieId },
+    } = req;
+
+    const movie = await Movie.findByIdAndRemove({
+        _id: movieId,
+        createdBy: userId
+    });
+
+    if (!movie) {
+        throw new NotFoundError(`No movie with id ${movieId}`)
+    }
+
+    res.status(StatusCodes.OK).send();
 };
 
 module.exports = {
