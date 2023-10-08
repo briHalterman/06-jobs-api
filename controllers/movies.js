@@ -16,17 +16,20 @@ const getMovie = async (req, res) => {
     // res.send('get individual movie');
     
     // nested destrucuring
-    const { user: { userId }, params: { id: movieId } } = req;
-
+    const { 
+        user: { userId }, 
+        params: { id: movieId } 
+    } = req;
+    
     const movie = await Movie.findOne({
         _id: movieId,
         createdBy: userId
     });
-
+    
     if (!movie) {
         throw new NotFoundError(`No movie with id ${movieId}`);
     }
-
+    
     res.status(StatusCodes.OK).json({ movie });
 };
 const createMovie = async (req, res) => {
@@ -37,8 +40,30 @@ const createMovie = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ movie });
 };
 const updateMovie = async (req, res) => {
-    res.send('update movie entry');
+    // res.send('update movie entry');
+    const {
+        body: { title, director, releaseYear, studio, genre },
+        user: { userId },
+        params: { id: movieId }
+    } = req;
+    
+    if (title === '' || director === '' || releaseYear === '' || studio === '' || genre === '') {
+        throw new BadRequestError('Please provide required properties.')
+    };
+
+    const movie = await Movie.findOneAndUpdate(
+        { _id: movieId, createdBy: userId }, 
+        req.body, 
+        { new: true, runValidators: true }
+    );
+
+    if (!movie) {
+        throw new NotFoundError(`No movie with id ${ movieId }`);
+    }
+
+    res.status(StatusCodes.OK).json({ movie });
 };
+
 const deleteMovie = async (req, res) => {
     res.send('delete movie entry');
 };
