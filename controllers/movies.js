@@ -13,7 +13,21 @@ const getAllUserMovies = async (req, res) => {
     res.status(StatusCodes.OK).json({ movies, count: movies.length });
 };
 const getMovie = async (req, res) => {
-    res.send('get individual movie');
+    // res.send('get individual movie');
+    
+    // nested destrucuring
+    const { user: { userId }, params: { id: movieId } } = req;
+
+    const movie = await Movie.findOne({
+        _id: movieId,
+        createdBy: userId
+    });
+
+    if (!movie) {
+        throw new NotFoundError(`No movie with id ${movieId}`);
+    }
+
+    res.status(StatusCodes.OK).json({ movie });
 };
 const createMovie = async (req, res) => {
     // res.send('create movie entry');
