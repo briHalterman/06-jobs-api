@@ -38,6 +38,13 @@ const cors = require('cors');
 const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit'); // will require configuration
 
+// swagger
+// Setting up a Swagger configuration:
+// need to document API so that implementers of applications that call the API know what the operations are
+// Swagger is the best way to do that!
+// also creates a graphical user interface so that one can call the APIs directly from the UI
+// this section is complicated and confusing, so unless you are very brave, you probably don’t want to try to implement Swagger for your application
+
 const express = require('express'); // look for express
 const app = express(); // invoke express and set equal to app
 
