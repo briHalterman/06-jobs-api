@@ -41,4 +41,4 @@ const errorHandlerMiddleware = (err, req, res, next) => {
 }
 // // we will work on errorHandlerMiddleware to check for multiple mongoose errors instead of always sending back 500 with long error message 
 
-module.exports = errorHandlerMiddleware
+module.exports = errorHandlerMiddleware;

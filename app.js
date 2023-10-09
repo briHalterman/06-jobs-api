@@ -1,5 +1,29 @@
 require('dotenv').config();
 require('express-async-errors');
+
+// SECURITY
+// security configuration uses the following node packages:
+
+// helmet:    
+// most popular
+// sets headers to prevent numerous attacks
+
+// cors:   
+// Cross Origin Resource Sharing
+// ensures API is accessable from different domain
+
+// xss-clean: 
+// sanitizes user input to req.body, req.query, req.params
+// protects from cross side scripting attacks
+
+// express-rate-limit:
+// limits the number of requests user can make
+
+// packages must be used whenever an application is deployed publicly to minimize the chance of a security exposure
+
+// import extra security packages
+
+
 const express = require('express'); // look for express
 const app = express(); // invoke express and set equal to app
 
