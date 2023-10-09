@@ -1,5 +1,5 @@
 // ERROR HANDLER MIDDLEWARE
-const { CustomAPIError } = require('../errors') // get custom api error
+// const { CustomAPIError } = require('../errors') // get custom api error
 const { StatusCodes } = require('http-status-codes') 
 const errorHandlerMiddleware = (err, req, res, next) => {
   // console.log(err);
@@ -11,9 +11,9 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   };
   
   // if custom api error, send the response with the status code and send error message
-  if (err instanceof CustomAPIError) {
-    return res.status(err.statusCode).json({ msg: err.message });
-  }
+  // if (err instanceof CustomAPIError) {
+  //   return res.status(err.statusCode).json({ msg: err.message });
+  // }
 
   if (err.code && err.code === 11000) {
     customError.msg = `Duplicate value entered for ${Object.keys(err.keyValue)} field. Please choose another value.`;
