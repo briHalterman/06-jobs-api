@@ -41,5 +41,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const moviesMessage = document.getElementById("movies-message");
     const editCancel = document.getElementById("edit-cancel");
   
-    // section 2 
+    // section 2
+    // // where the next code will go
+
+    // At various times in the application, the home page must be displayed. The home page will show a logon button and a register button if the user is not logged in. If the user is logged in, the logoff button is shown, as well as a table of movies entries, if the user has any.
+
+    // Because the home page must be brought up at various points in the application, you create an event listener for it, and trigger its display by dispatching an event. 
+    
+    // Add next section of code:
+    let showing = logonRegister;
+    let token = null;
+    document.addEventListener("startDisplay", async () => {
+      showing = logonRegister;
+      token = localStorage.getItem("token");
+      if (token) {
+        //if the user is logged in
+        logoff.style.display = "block";
+        const count = await buildMoviesTable(
+          moviesTable,
+          moviesTableHeader,
+          token,
+          message
+        );
+        if (count > 0) {
+          moviesMessage.textContent = "";
+          moviesTable.style.display = "block";
+        } else {
+          moviesMessage.textContent = "There are no movies to display for this user.";
+          moviesTable.style.display = "none";
+        }
+        movies.style.display = "block";
+        showing = movies;
+      } else {
+        logonRegister.style.display = "block";
+      }
+    });
+  
+    var thisEvent = new Event("startDisplay");
+    document.dispatchEvent(thisEvent);
+    var suspendInput = false;
+
+    // In the code above, several operational variables (token, showing, thisEvent, and suspendInput) are created. The token is retrieved from local storage. Local storage persists even if the page is refreshed. If the token is not present in local storage, that means the user is not logged in, so the logon/register div is shown. Otherwise the logoff button and the movies div are shown. The movies div contains the table for movies entries, and this is shown only if the user has movies entries. The showing variable keeps track of which div is being shown. The thisEvent variable is used to create an event, which, when dispatched, triggers the home page display. Divs are shown and hidden by setting the style.display for the div to “block” or “none”.
+
+    // This section of code calls a function, buildMoviesTable. This function does the complicated task of populating the movies table.
+  
+    // section 3
 });
