@@ -8,6 +8,12 @@
 // change this code to match movies data model
 // divs and controls must be resolved by their ID
 
+// add this code to the top of movies.js:
+async function buildMoviesTable(moviesTable, moviesTableHeader, token, message) {
+    return 0;
+};
+// This function is async because it will eventually await a fetch call to retrieve the list of movies. It returns the number of movies retrieved. Right now of course, it just returns 0.
+
 // Start movies.js with the following code:
 document.addEventListener("DOMContentLoaded", () => {
     const logoff = document.getElementById("logoff");
