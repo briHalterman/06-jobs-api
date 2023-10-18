@@ -36,7 +36,7 @@ const MovieSchema = new mongoose.Schema(
         },
         genre: {
             type: String,
-            enum: ['Action', 'Adventure', 'Animation (Adult)', 'Animation (Childrens)', 'Animation (Family)', 'Baliwood', 'Biblical', 'Biopic', 'Comedy', 'Crime', 'Cultural Relic', 'Documentary (Biographical)', 'Documentary (Natural)', 'Documentary (Social)', 'Documentary (Other)', 'Drama', 'Educational', 'Family', 'Fantasy', 'Film Noir', 'Historical Fiction', 'Horror', 'Martial Arts', 'Musical Theatre', 'Mystery', 'Performance', 'Religious Values', 'Rock Opera', 'Romance', 'RomCom', 'Sci-Fi', 'Silent Film', 'Sport', 'Superhero', 'Suspense', 'Thriller', 'War', 'Western', 'Other'],
+            enum: ['Action', 'Adventure', 'Baliwood', 'Comedy', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Historical Fiction', 'Horror', 'Martial Arts', 'Musical Theatre', 'Mystery', 'Romance', 'Sci-Fi','Sport', 'Suspense', 'Western', 'Other'],
             required: [true, 'Please select genre.']
         },
         // subGenre: {},
