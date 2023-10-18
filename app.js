@@ -81,6 +81,8 @@ app.use(
 //   // res.send('jobs api');
 //   res.send('<h1>Movies API</h1><a href="/api-docs">Documentation</a>');
 // });
+
+// Add the following line:
 app.use(express.static('public'));
 
 // invoke .json because we want to access data in req.body for POST routes
