@@ -83,7 +83,8 @@ const deleteMovie = async (req, res) => {
         throw new NotFoundError(`No movie with id ${movieId}`)
     }
 
-    res.status(StatusCodes.OK).send();
+    // res.status(StatusCodes.OK).send(); // Note: an empty body is not valid JSON
+    res.status(StatusCodes.OK).json({msg: "The entry was deleted."})
 };
 
 module.exports = {
