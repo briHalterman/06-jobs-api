@@ -357,8 +357,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   body: JSON.stringify({
                     title: title.value,
                     director: director.value,
-                    releaseYear: releaseYear.value = "",
-                    studio: studio.value = "",
+                    releaseYear: releaseYear.value,
+                    studio: studio.value,
                     genre: genre.value,
                   }),
                 });
@@ -387,5 +387,47 @@ document.addEventListener("DOMContentLoaded", () => {
           // Note that, unlike the logon and register, these operations use and require the Authorization header, which has the bearer token. If that is not present, the operation fails with a 401 not authorized result code. 
           
           // section 5
+
+          //   add the following code:
+          else if (e.target.classList.contains("editButton")) {
+            // keep track of the movies entry that is being updated, which is in the dataset.id of the button that was clicked
+            // stored in the dataset.id of the editMovie.div
+            editMovie.dataset.id = e.target.dataset.id;
+            suspendInput = true;
+            try {
+              // retrieve entry from database
+              // populate the entry fields with the current values of title, director, relase year, studio and genre for that entry
+              // ID of the entry to be retrieved is appended to the URL for the GET method
+              const response = await fetch(`/api/v1/movies/${e.target.dataset.id}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              const data = await response.json();
+              // editMovie div is displayed, unless there are errors
+              if (response.status === 200) {
+                title.value = data.movie.title;
+                director.value = data.movie.director;
+                releaseYear.value = data.movie.releaseYear;
+                studio.value = data.movie.studio;
+                genre.value = data.movie.genre;
+                showing.style.display = "none";
+                showing = editMovie;
+                showing.style.display = "block";
+                addingMovie.textContent = "update";
+                message.textContent = "";
+              } else {
+                // might happen if the list has been updated since last display
+                message.textContent = "The movies entry was not found";
+                thisEvent = new Event("startDisplay");
+                document.dispatchEvent(thisEvent);
+              }
+            } catch (err) {
+              message.textContent = "A communications error has occurred.";
+            }
+            suspendInput = false;
+          }
       })
 });
