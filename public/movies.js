@@ -228,5 +228,119 @@ document.addEventListener("DOMContentLoaded", () => {
         } 
         
         // section 4
+
+        // Add the following code:
+        else if (e.target === addMovie) {
+            // addMovie button causes the editMovie div to be shown in place of the home page
+            // this div is used both for add and for edit
+            // keep track of whether an add or edit is being done with the editMovie.dataset.id value
+            // dataset attribute of a DOM entry may be used to store arbitrary values
+            showing.style.display = "none";
+            editMovie.style.display = "block";
+            showing = editMovie;
+            delete editMovie.dataset.id;
+            title.value = "";
+            director.value = "";
+            releaseYear.value = "";
+            studio.value = "";
+            genre.value = "";
+            addingMovie.textContent = "add";
+          } else if (e.target === editCancel) {
+            showing.style.display = "none";
+            title.value = "";
+            director.value = "";
+            releaseYear.value = "";
+            studio.value = "";
+            genre.value = "";
+            thisEvent = new Event("startDisplay");
+            document.dispatchEvent(thisEvent);
+          } else if (e.target === addingMovie) {
+            // if the addingMovie pushbutton is clicked, an add or an update is attempted
+            // if editMovie.dataset.id is not set, then this is an add
+            if (!editMovie.dataset.id) {
+              // this is an attempted add
+              suspendInput = true;
+              try {
+                // add operation corresponds to a fetch call with POST as the method
+                const response = await fetch("/api/v1/movies", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    title: title.value,
+                    director: director.value,
+                    releaseYear: releaseYear.value,
+                    studio: studio.value,
+                    genre: genre.value,
+                  }),
+                });
+                const data = await response.json();
+                if (response.status === 201) {
+                  //successful create
+                  message.textContent = "The movie entry was created.";
+                  showing.style.display = "none";
+                  thisEvent = new Event("startDisplay");
+                  document.dispatchEvent(thisEvent);
+                  title.value = "";
+                  director.value = "";
+                  releaseYear.value = "";
+                  studio.value = "";
+                  genre.value = "";
+                } else {
+                  // failure
+                  message.textContent = data.msg;
+                }
+              } catch (err) {
+                message.textContent = "A communication error occurred.";
+              }
+              suspendInput = false;
+            } else {
+              // if editMovie.dataset.id is set, it holds the value of the entry being edited
+              // this is an update
+              suspendInput = true;
+              try {
+                const movieID = editMovie.dataset.id;
+                // update operation corresponds to a fetch with a PATCH method
+                const response = await fetch(`/api/v1/movies/${movieID}`, {
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    title: title.value,
+                    director: director.value,
+                    releaseYear: releaseYear.value = "",
+                    studio: studio.value = "",
+                    genre: genre.value,
+                  }),
+                });
+                const data = await response.json();
+                // if this is successful, a messsage is displayed to the user and the display of the home page is triggered
+                if (response.status === 200) {
+                  message.textContent = "The entry was updated.";
+                  showing.style.display = "none";
+                  title.value = "";
+                  director.value = "";
+                  releaseYear.value = "";
+                  studio.value = "";
+                  genre.value = "";
+                  thisEvent = new Event("startDisplay");
+                  document.dispatchEvent(thisEvent);
+                } else {
+                  // if the add or update operation fails, a message, taken from the body of the response, is showed to the user
+                  message.textContent = data.msg;
+                }
+              } catch (err) {      
+                message.textContent = "A communication error occurred.";
+              }
+            }
+            suspendInput = false;
+          }
+          // Note that, unlike the logon and register, these operations use and require the Authorization header, which has the bearer token. If that is not present, the operation fails with a 401 not authorized result code. 
+          
+          // section 5
       })
 });
