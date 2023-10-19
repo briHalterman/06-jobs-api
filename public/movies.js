@@ -8,12 +8,57 @@
 // change this code to match movies data model
 // divs and controls must be resolved by their ID
 
-// add this code to the top of movies.js:
+// Replace the buildMoviesTable function there with the following:
+// // add this code to the top of movies.js:
+// async function buildMoviesTable(moviesTable, moviesTableHeader, token, message) {
+//     return 0;
+// };
+// // This function is async because it will eventually await a fetch call to retrieve the list of movies. 
+// // It returns the number of movies retrieved. Right now of course, it just returns 0.
 async function buildMoviesTable(moviesTable, moviesTableHeader, token, message) {
-    return 0;
-};
-// This function is async because it will eventually await a fetch call to retrieve the list of movies. 
-// It returns the number of movies retrieved. Right now of course, it just returns 0.
+    try {
+      // GET request for all of the movies entries
+      const response = await fetch("/api/v1/movies", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      var children = [moviesTableHeader];
+      if (response.status === 200) {
+        // if no entries are returned, the function just returns 0
+        if (data.count === 0) {
+          moviesTable.replaceChildren(...children); // clear this for safety
+          return 0;
+        } else {
+          // if entries are returned, they must be added to the table in the following columns: title, director, release year, studio, genre, edit button, delete button
+          // rows of the table are accumulated in a loop, with the first row being the table header row
+          // The tricky part is the buttons: identify whether a button represents an add or delete with the editButton and deleteButton classes
+          // record which movies entry corresponds to which button with the dataset.id attribute, which is set in the HTML using dataset-id
+          //  HTML for each row is created and turned into a DOM entry
+          for (let i = 0; i < data.movies.length; i++) {
+            let editButton = `<td><button type="button" class="editButton" data-id=${data.movies[i]._id}>edit</button></td>`;
+            let deleteButton = `<td><button type="button" class="deleteButton" data-id=${data.movies[i]._id}>delete</button></td>`;
+            let rowHTML = `<td>${data.movies[i].title}</td><td>${data.movies[i].director}</td><td>${data.movies[i].releaseYear}</td><td>${data.movies[i].studio}</td><td>${data.movies[i].genre}</td>${editButton}${deleteButton}`;
+            let rowEntry = document.createElement("tr");
+            rowEntry.innerHTML = rowHTML;
+            children.push(rowEntry);
+          }
+        // table is updated with the rows using a replaceChildren() call
+          moviesTable.replaceChildren(...children);
+        }
+        return data.count;
+      } else {
+        message.textContent = data.msg;
+        return 0;
+      }
+    } catch (err) {
+      message.textContent = "A communication error occurred.";
+      return 0;
+    }
+}
 
 // Start movies.js with the following code:
 document.addEventListener("DOMContentLoaded", () => {
