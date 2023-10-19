@@ -388,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 		// Note that, unlike the logon and register, these operations use and require the Authorization header, which has the bearer token. If that is not present, the operation fails with a 401 not authorized result code. 
 		
-		// section 5: implement edit
+		// section 5: implement edit and delete buttons
 
 		//   add the following code:
 		else if (e.target.classList.contains("editButton")) {
@@ -431,5 +431,41 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 			suspendInput = false;
 		}
+
+		// check for deleteButton class in e.target
+		else if (e.target.classList.contains("deleteButton")) {
+			// id of the entry is stored in the data-id of the button
+      editMovie.dataset.id = e.target.dataset.id;
+			// set the suspendInput flag before you start async operations
+      suspendInput = true;
+			// 
+      try {
+				// call to fetch with a method of DELETE giving the URL of that entry
+        const response = await fetch(`/api/v1/movies/${e.target.dataset.id}`, {
+          method: "DELETE",
+					// include the authorization header
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+					// put a message in the text content of the message paragraph
+          message.textContent = "Movie entry has been deleted.";
+					// redraw the table showing the updated list of entries by dispatching an event to startDisplay
+					thisEvent = new Event("startDisplay");
+          document.dispatchEvent(thisEvent);
+        } else {
+          // put a message indicating the failure in the message paragraph
+          message.textContent = "Movie entry failed to delete.";
+          thisEvent = new Event("startDisplay");
+          document.dispatchEvent(thisEvent);
+        }
+      } catch (err) {
+        message.textContent = "A communications error has occurred.";
+      }
+			// clear the suspendInput flag after async operations
+      suspendInput = false;
+    }
 	})
 });
