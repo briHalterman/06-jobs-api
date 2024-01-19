@@ -38,7 +38,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   // easier to understand whats happening
   // return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err }); 
   return res.status(customError.statusCode).json({ msg: customError.msg });
-}
+};
 // // we will work on errorHandlerMiddleware to check for multiple mongoose errors instead of always sending back 500 with long error message 
 
 module.exports = errorHandlerMiddleware;

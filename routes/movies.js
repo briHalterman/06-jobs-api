@@ -3,11 +3,11 @@ const express = require('express');
 const router = express.Router();
 
 const { 
-    getAllUserMovies, 
-    getMovie, 
-    createMovie, 
-    updateMovie, 
-    deleteMovie 
+	getAllUserMovies, 
+	getMovie, 
+	createMovie, 
+	updateMovie, 
+	deleteMovie 
 } = require('../controllers/movies');
 
 // syntax option 2 (i like this one)

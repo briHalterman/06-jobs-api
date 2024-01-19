@@ -75,10 +75,15 @@ app.use(
   // default status code response = 429
 );
 
-// dummy route
-app.get('/', (req, res) => {
-  res.send('jobs api');
-});
+// Comment out the following lines:
+// // dummy route
+// app.get('/', (req, res) => {
+//   // res.send('jobs api');
+//   res.send('<h1>Movies API</h1><a href="/api-docs">Documentation</a>');
+// });
+
+// Add the following line:
+app.use(express.static('public'));
 
 // invoke .json because we want to access data in req.body for POST routes
 app.use(express.json());
